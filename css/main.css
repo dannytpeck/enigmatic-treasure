@@ -276,10 +276,6 @@ h1, h2, h3, h4, h5 {
   max-width: 1000px;
 }
 
-#tile-preview {
-  width: 440px;
-}
-
 #tile-preview .item-info-image {
   width: 100%;
   margin-bottom: 1em;

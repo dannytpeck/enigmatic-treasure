@@ -9,7 +9,7 @@ class Header extends Component {
     return (
       <div className="header">
         <a onClick={this.reloadPage}>
-          <img className="home-button" src="images/icon_home.svg" />
+          <img className="home-button" src="images/icon_home.png" />
         </a>
         <img className="logo" src="images/ADURO-Logo-Horizontal.png" />
         <h3 className="my-4">Custom Tile Request Form</h3>
