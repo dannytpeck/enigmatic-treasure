@@ -28,7 +28,9 @@ class App extends Component {
           console.error(err);
           return;
         }
+
         console.log(record);
+
         this.setState({ challenge: record });
       });
     }
