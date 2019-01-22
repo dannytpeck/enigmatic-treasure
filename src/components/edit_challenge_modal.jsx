@@ -16,14 +16,16 @@ class EditChallengeModal extends Component {
       endDate: '',
       verified: '',
       individual: '',
-      rewardOccurrence: '',
+      rewardOccurrence: 'Once',
       activityTrackingType: '',
       trackingText: '',
       activityGoal: '',
-      points: '',
       title: '',
       instructions: '',
-      description: ''
+      description: 'Additional information can be added here.',
+      points: '0',
+      pointsVisible: true,
+      tileType: 'Self-Report Challenge'
     };
 
     this.setTitle = this.setTitle.bind(this);
@@ -108,6 +110,20 @@ class EditChallengeModal extends Component {
     this.setState({ instructions: e.target.value });
   }
 
+  setTileType(e) {
+    if (e.target.value === 'Informational Tile') {
+      this.setState({
+        tileType: e.target.value,
+        pointsVisible: false
+      });
+    } else {
+      this.setState({
+        tileType: e.target.value,
+        pointsVisible: true
+      });
+    }
+  }
+
   saveUpdatedChallenge(challenge) {
     /* global $ */
     challenge.fields['Start date'] = this.state.startDate;
@@ -152,6 +168,20 @@ class EditChallengeModal extends Component {
         <div className="row">
           <div className="col">
 
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="tileType">Type of Tile?</label>
+                <select className="form-control" id="tileType" value={this.state.tileType} onChange={(e) => this.setTileType(e)}>
+                  <option>Self-Report Challenge</option>
+                  <option>Verified Challenge</option>
+                  <option>Device-Enabled Challenge</option>
+                  <option>Informational Tile</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
             <div className="row">
               <div className="col">
                 <div className="form-group">
@@ -170,43 +200,32 @@ class EditChallengeModal extends Component {
             <div className="row">
               <div className="col">
                 <div className="form-group">
-                  <label htmlFor="verified">Verified</label>
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="Verified" id="verified" value="Verified"
-                      checked={this.state.verified === 'Verified'} onChange={(e) => this.setVerified(e)} />
-                    <label className="form-check-label" htmlFor="verified">Verified</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="Verified" id="selfReport" value="Self-Report"
-                      checked={this.state.verified === 'Self-Report'} onChange={(e) => this.setVerified(e)} />
-                    <label className="form-check-label" htmlFor="selfReport">Self-Report</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <div className="form-group">
                   <label htmlFor="rewardOccurrence">Reward Occurrence</label>
                   <select className="form-control" id="rewardOccurrence" value={this.state.rewardOccurrence} onChange={(e) => this.setRewardOccurrence(e)}>
                     <option>Once</option>
                     <option>Weekly</option>
-                    <option>Monthly</option>
-                    <option>Bi-weekly</option>
-                    <option>Unlimited</option>
                   </select>
                 </div>
               </div>
               <div className="col">
-                <div className="form-group">
-                  <label htmlFor="activityTrackingType">Activity Tracking Type</label>
-                  <select className="form-control" id="activityTrackingType" value={this.state.activityTrackingType} onChange={(e) => this.setActivityTrackingType(e)}>
-                    <option>Event</option>
-                    <option>Days</option>
-                    <option>Units</option>
-                  </select>
-                </div>
+                {
+                  this.state.rewardOccurrence === 'Once' ?
+                  <div className="form-group">
+                    <label htmlFor="activityTrackingType">Activity Tracking Type</label>
+                    <select className="form-control" id="activityTrackingType" value={this.state.activityTrackingType} onChange={(e) => this.setActivityTrackingType(e)}>
+                      <option>Event</option>
+                      <option>Days</option>
+                      <option>Units</option>
+                    </select>
+                  </div> :
+                  <div className="form-group">
+                    <label htmlFor="activityTrackingType">Activity Tracking Type</label>
+                    <select className="form-control" id="activityTrackingType" value={this.state.activityTrackingType} onChange={(e) => this.setActivityTrackingType(e)}>
+                      <option>Days</option>
+                      <option>Units</option>
+                    </select>
+                  </div>
+                }
               </div>
             </div>
 
@@ -225,14 +244,18 @@ class EditChallengeModal extends Component {
               </div>
             </div>
 
-            <div className="row">
-              <div className="col-3">
-                <div className="form-group">
-                  <label htmlFor="points">Points</label>
-                  <input type="text" className="form-control" id="points" value={this.state.points} onChange={(e) => this.setPoints(e)} />
+            {
+              this.state.pointsVisible ?
+              <div className="row">
+                <div className="col-3">
+                  <div className="form-group">
+                    <label htmlFor="points">Points</label>
+                    <input type="text" className="form-control" id="points" value={this.state.points} onChange={(e) => this.setPoints(e)} />
+                  </div>
                 </div>
-              </div>
-            </div>
+              </div> :
+              ''
+            }
 
             <div className="row">
               <div className="col">

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import Airtable from 'airtable';
+const base = new Airtable({ apiKey: 'keyCxnlep0bgotSrX' }).base('appx5d6Pp5tarqI1E');
+
 import TilePreview from './tile_preview';
 
 class CreateNewTile extends Component {
@@ -103,6 +106,37 @@ class CreateNewTile extends Component {
     }
   }
 
+  saveNewChallenge() {
+    /* global $ */
+    let challenge = {};
+
+    challenge['Title'] = this.state.title;
+    challenge['Start date'] = this.state.startDate;
+    challenge['End date'] = this.state.endDate;
+    challenge['Verified'] = this.state.verified;
+    challenge['Points'] = this.state.points;
+    challenge['Instructions'] = this.state.instructions;
+    challenge['More Information Html'] = $('.description-text').html();
+    challenge['Team Activity'] = this.state.individual ? 'no' : 'yes';
+    challenge['Reward Occurrence'] = this.state.rewardOccurrence;
+    challenge['Activity Tracking Type'] = this.state.activityTrackingType;
+    challenge['Activity Goal'] = this.state.activityGoal;
+    challenge['Activity Goal Text'] = this.state.trackingText;
+
+    base('Custom Tiles').create(challenge, function(err, record) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log('Saving: ', challenge);
+      console.log('Saving new challenge!');
+
+      // TODO: fix this to work properly
+      window.location.href = '/#/' + record.getId();
+    });
+
+  }
+
   render() {
     return (
       <div>
@@ -110,19 +144,19 @@ class CreateNewTile extends Component {
 
           <div className="col">
 
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label htmlFor="tileType">Type of Tile?</label>
-                <select className="form-control" id="tileType" value={this.state.tileType} onChange={(e) => this.setTileType(e)}>
-                  <option>Self-Report Challenge</option>
-                  <option>Verified Challenge</option>
-                  <option>Device-Enabled Challenge</option>
-                  <option>Informational Tile</option>
-                </select>
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="tileType">Type of Tile?</label>
+                  <select className="form-control" id="tileType" value={this.state.tileType} onChange={(e) => this.setTileType(e)}>
+                    <option>Self-Report Challenge</option>
+                    <option>Verified Challenge</option>
+                    <option>Device-Enabled Challenge</option>
+                    <option>Informational Tile</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
 
             <div className="row">
               <div className="col">
@@ -199,6 +233,12 @@ class CreateNewTile extends Component {
               </div> :
               ''
             }
+
+            <div className="row">
+              <div className="col">
+                <button type="button" className="btn btn-primary" onClick={() => this.saveNewChallenge()}>Save Tile</button>
+              </div>
+            </div>
 
           </div>
 
