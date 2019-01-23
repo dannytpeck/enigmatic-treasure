@@ -266,7 +266,7 @@ class CreateNewTile extends Component {
           <div className="col">
 
             <TilePreview
-              imageSrc='https://mywellnessnumbers.com/aduro/placeholder-image.jpg'
+              // imageSrc='https://mywellnessnumbers.com/aduro/placeholder-image.jpg
               title={this.state.title}
               instructions={this.state.instructions}
               description={this.state.description}
