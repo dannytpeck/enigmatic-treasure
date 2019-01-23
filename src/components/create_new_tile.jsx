@@ -131,7 +131,7 @@ class CreateNewTile extends Component {
       }
 
       // Add id to url fragment and reload page (to start editing)
-      window.location.href = '/#/' + record.getId();
+      window.location.href += '#/' + record.getId();
       window.location.reload();
 
     });
