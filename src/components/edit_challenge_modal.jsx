@@ -14,7 +14,6 @@ class EditChallengeModal extends Component {
       unitsVisible: false,
       startDate: '',
       endDate: '',
-      verified: '',
       individual: '',
       rewardOccurrence: 'Once',
       activityTrackingType: '',
@@ -37,7 +36,6 @@ class EditChallengeModal extends Component {
     this.setState({
       startDate: challenge.fields['Start date'],
       endDate: challenge.fields['End date'],
-      verified: challenge.fields['Verified'],
       individual: challenge.fields['Team Activity'] === 'no',
       rewardOccurrence: challenge.fields['Reward Occurrence'],
       activityTrackingType: challenge.fields['Activity Tracking Type'],
@@ -72,10 +70,6 @@ class EditChallengeModal extends Component {
 
   setEndDate(e) {
     this.setState({ endDate: e.target.value });
-  }
-
-  setVerified(e) {
-    this.setState({ verified: e.target.value });
   }
 
   setIndividual(e) {
@@ -126,42 +120,37 @@ class EditChallengeModal extends Component {
 
   saveUpdatedChallenge(challenge) {
     /* global $ */
+
+    challenge.fields['Title'] = this.state.title;
+    challenge.fields['Tile Type'] = this.state.tileType;
     challenge.fields['Start date'] = this.state.startDate;
     challenge.fields['End date'] = this.state.endDate;
-    challenge.fields['Verified'] = this.state.verified;
+    challenge.fields['Points'] = this.state.points;
+    challenge.fields['Instructions'] = this.state.instructions;
+    challenge.fields['More Information Html'] = $('.description-text').html();
     challenge.fields['Team Activity'] = this.state.individual ? 'no' : 'yes';
     challenge.fields['Reward Occurrence'] = this.state.rewardOccurrence;
     challenge.fields['Activity Tracking Type'] = this.state.activityTrackingType;
-    challenge.fields['Activity Goal Text'] = this.state.trackingText;
     challenge.fields['Activity Goal'] = this.state.activityGoal;
-    challenge.fields['Points'] = this.state.points;
-    challenge.fields['Title'] = this.state.title;
-    challenge.fields['Instructions'] = this.state.instructions;
-    challenge.fields['More Information Html'] = $('.description-text').html();
+    challenge.fields['Activity Goal Text'] = this.state.trackingText;
 
     // Delete computed fields
     delete challenge.fields['ID'];
-
-    // Update Total Points based on points and frequency
-    const start = moment(this.state.startDate);
-    const end = moment(this.state.endDate);
-    const dayDifference = end.diff(start, 'days');
-    const weeks = Math.ceil(dayDifference / 7);
 
     base('Custom Tiles').replace(challenge.id, challenge.fields, function(err, record) {
       if (err) {
         console.error(err);
         return;
       }
-      console.log('Updated: ', challenge);
+
       console.log('Saving updated challenge!');
+      console.log(challenge);
     });
 
   }
 
   render() {
     const challenge = this.props.challenge;
-    const cannotModify = this.state.instructions === 'THIS TEXT CANNOT BE MODIFIED';
 
     return (
       <div>

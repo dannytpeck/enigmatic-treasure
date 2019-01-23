@@ -22,11 +22,14 @@ class TilePreview extends Component {
             </div>
           </div>
 
-          <div id="instructions-box" className="info-header">
-            <div className="form-group">
-              <textarea className="form-control" type="text" id="challengeInstructions" value={this.props.instructions} onChange={(e) => this.props.setInstructions(e)} readOnly={!editable} placeholder="Instructions" ></textarea>
-            </div>
-          </div>
+          {
+            this.props.tileType !== 'Informational Tile' ?
+            <div id="instructions-box" className="info-header">
+              <div className="form-group">
+                <textarea className="form-control" type="text" id="challengeInstructions" value={this.props.instructions} onChange={(e) => this.props.setInstructions(e)} readOnly={!editable} placeholder="Instructions" ></textarea>
+              </div>
+            </div> : ''
+          }
 
           {
             editable ?
