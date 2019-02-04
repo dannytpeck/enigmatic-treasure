@@ -25,7 +25,11 @@ class CreateNewTile extends Component {
       points: '0',
       pointsVisible: true,
       tileType: 'Self-Report Challenge',
-      category: ''
+      category: '',
+      tracking: 'One Time',
+      participation: 'Individual',
+      minTeamSize: '4',
+      maxTeamSize: '12'
     };
 
     this.setTitle = this.setTitle.bind(this);
@@ -106,6 +110,22 @@ class CreateNewTile extends Component {
     this.setState({ category: e.target.value });
   }
 
+  setTracking(e) {
+    this.setState({ tracking: e.target.value });
+  }
+
+  setParticipation(e) {
+    this.setState({ participation: e.target.value });
+  }
+
+  setMinTeamSize(e) {
+    this.setState({ minTeamSize: e.target.value });
+  }
+
+  setMaxTeamSize(e) {
+    this.setState({ maxTeamSize: e.target.value });
+  }
+
   saveNewChallenge() {
     /* global $ */
     let challenge = {};
@@ -117,7 +137,6 @@ class CreateNewTile extends Component {
     challenge['Points'] = this.state.points;
     challenge['Instructions'] = this.state.instructions;
     challenge['More Information Html'] = $('.description-text').html();
-    challenge['Category'] = this.state.category;
     challenge['Team Activity'] = this.state.individual ? 'no' : 'yes';
     challenge['Reward Occurrence'] = this.state.rewardOccurrence;
     challenge['Activity Tracking Type'] = this.state.activityTrackingType;
@@ -136,6 +155,88 @@ class CreateNewTile extends Component {
 
     });
 
+  }
+
+  renderStepsChallenge() {
+    return (
+      <div>
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="participation">Participation</label>
+              <select className="form-control" id="participation" value={this.state.participation} onChange={(e) => this.setParticipation(e)}>
+                <option>Individual</option>
+                <option>Team</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {
+          this.state.participation !== 'Team' ?
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="frequency">Frequency</label>
+                <select className="form-control" id="frequency" value={this.state.frequency} onChange={(e) => this.setFrequency(e)}>
+                  <option>Weekly</option>
+                  <option>By End Date</option>
+                </select>
+              </div>
+            </div>
+          </div> :
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="minTeamSize">Minimum Team Size</label>
+                <select className="form-control" id="minTeamSize" value={this.state.minTeamSize} onChange={(e) => this.setMinTeamSize(e)}>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="maxTeamSize">Maximum Team Size</label>
+                <select className="form-control" id="maxTeamSize" value={this.state.maxTeamSize} onChange={(e) => this.setMaxTeamSize(e)}>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+                  <option>13</option>
+                  <option>14</option>
+                  <option>15</option>
+                  <option>16</option>
+                  <option>17</option>
+                  <option>18</option>
+                  <option>19</option>
+                  <option>20</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        }
+
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="stepsGoal">Steps Goal</label>
+              <input type="text" className="form-control" id="stepsGoal" value={this.state.stepsGoal} onChange={(e) => this.setStepsGoal(e)} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -162,20 +263,6 @@ class CreateNewTile extends Component {
             <div className="row">
               <div className="col">
                 <div className="form-group">
-                  <label htmlFor="category">Category</label>
-                  <select className="form-control" id="category" value={this.state.category} onChange={(e) => this.setCategory(e)}>
-                    <option>Health and Fitness</option>
-                    <option>Money and Prosperity</option>
-                    <option>Growth and Development</option>
-                    <option>Contribution and Sustainability</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <div className="form-group">
                   <label htmlFor="startDate">Start Date</label>
                   <input className="form-control" type="date" id="startDate" value={this.state.startDate} onChange={(e) => this.setStartDate(e)} />
                 </div>
@@ -188,71 +275,37 @@ class CreateNewTile extends Component {
               </div>
             </div>
 
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="points">Points</label>
+                  <input type="text" className="form-control" id="points" value={this.state.points} onChange={(e) => this.setPoints(e)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="tracking">Tracking</label>
+                  <select className="form-control" id="tracking" value={this.state.tracking} onChange={(e) => this.setTracking(e)}>
+                    <option>One Time</option>
+                    <option>Steps Challenge</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             {
-              this.state.tileType !== 'Informational Tile' && this.state.tileType !== 'Verified Challenge' ?
+              this.state.tracking === 'One Time' ?
               <div className="row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="rewardOccurrence">Reward Occurrence</label>
-                    <select className="form-control" id="rewardOccurrence" value={this.state.rewardOccurrence} onChange={(e) => this.setRewardOccurrence(e)}>
-                      <option>Once</option>
-                      <option>Weekly</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col">
-
-                    {
-                      this.state.rewardOccurrence === 'Once' ?
-                      <div className="form-group">
-                        <label htmlFor="activityTrackingType">Activity Tracking Type</label>
-                        <select className="form-control" id="activityTrackingType" value={this.state.activityTrackingType} onChange={(e) => this.setActivityTrackingType(e)}>
-                          <option>Event</option>
-                          <option>Days</option>
-                          <option>Units</option>
-                        </select>
-                      </div> :
-                      <div className="form-group">
-                        <label htmlFor="activityTrackingType">Activity Tracking Type</label>
-                        <select className="form-control" id="activityTrackingType" value={this.state.activityTrackingType} onChange={(e) => this.setActivityTrackingType(e)}>
-                          <option>Days</option>
-                          <option>Units</option>
-                        </select>
-                      </div>
-                    }
-                </div>
-              </div> : ''
-            }
-
-            {
-              this.state.tileType !== 'Informational Tile' && this.state.tileType !== 'Verified Challenge' ?
-              <div className="row">
-                <div className="col">
-                  <div className="form-group">
-                    <label htmlFor="trackingText">Tracking Text</label>
+                    <label htmlFor="trackingText">To complete this... (50 character limit)</label>
                     <input type="text" className="form-control" id="trackingText" value={this.state.trackingText} onChange={(e) => this.setTrackingText(e)} />
                   </div>
                 </div>
-                <div className="col">
-                  <div className="form-group">
-                    <label htmlFor="activityGoal">Activity Goal</label>
-                    <input type="text" className="form-control" id="activityGoal" value={this.state.activityGoal} onChange={(e) => this.setActivityGoal(e)} />
-                  </div>
-                </div>
-              </div> : ''
-            }
-
-            {
-              this.state.pointsVisible ?
-              <div className="row">
-                <div className="col-3">
-                  <div className="form-group">
-                    <label htmlFor="points">Points</label>
-                    <input type="text" className="form-control" id="points" value={this.state.points} onChange={(e) => this.setPoints(e)} />
-                  </div>
-                </div>
-              </div> :
-              ''
+              </div> : this.renderStepsChallenge()
             }
 
             <div className="row">
@@ -274,6 +327,16 @@ class CreateNewTile extends Component {
               setInstructions={this.setInstructions}
               tileType={this.state.tileType}
             />
+
+            <p className="my-2">Does the client offer coaching?</p>
+            <div className="form-check-inline">
+              <input className="form-check-input" type="radio" name="coachingRadios" id="coachingRadios1" value="coaching" defaultChecked />
+              <label className="form-check-label" htmlFor="coachingRadios1">Yes</label>
+            </div>
+            <div className="form-check-inline">
+              <input className="form-check-input" type="radio" name="coachingRadios" id="coachingRadios2" value="noCoaching" />
+              <label className="form-check-label" htmlFor="coachingRadios2">No</label>
+            </div>
 
           </div>
 
