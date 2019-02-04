@@ -18,7 +18,7 @@ class TilePreview extends Component {
 
           <div id="title-box" className="info-header">
             <div className="form-group">
-              <input className="form-control" type="text" id="challengeTitle" value={this.props.title} onChange={(e) => this.props.setTitle(e)} placeholder="Title" />
+              <input className="form-control" type="text" id="challengeTitle" value={this.props.title} onChange={(e) => this.props.setTitle(e)} placeholder="Name" />
             </div>
           </div>
 
@@ -26,7 +26,7 @@ class TilePreview extends Component {
             this.props.tileType !== 'Informational Tile' ?
             <div id="instructions-box" className="info-header">
               <div className="form-group">
-                <textarea className="form-control" type="text" id="challengeInstructions" value={this.props.instructions} onChange={(e) => this.props.setInstructions(e)} readOnly={!editable} placeholder="Instructions" ></textarea>
+                <textarea className="form-control" type="text" id="challengeInstructions" value={this.props.instructions} onChange={(e) => this.props.setInstructions(e)} placeholder="Short Description" ></textarea>
               </div>
             </div> : ''
           }
